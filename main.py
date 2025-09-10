@@ -66,20 +66,33 @@ st.set_page_config(page_title="Medical News", layout="wide")
 # ---------------------------
 # Language Selection Popup
 # ---------------------------
+# if "language" not in st.session_state:
+#     st.title("🌐 Select Language")
+#     st.write("Please select your preferred language to continue:")
+#     col1, col2 = st.columns(2)
+#     with col1:
+#         if st.button("English 🇬🇧"):
+#             st.session_state.language = "english"
+#             st.experimental_rerun()
+#     with col2:
+#         if st.button("മലയാളം 🇮🇳"):
+#             st.session_state.language = "malayalam"
+#             st.experimental_rerun()
+#     st.stop()
 if "language" not in st.session_state:
+    st.session_state.language = None
+
+if st.session_state.language is None:
     st.title("🌐 Select Language")
     st.write("Please select your preferred language to continue:")
     col1, col2 = st.columns(2)
     with col1:
         if st.button("English 🇬🇧"):
             st.session_state.language = "english"
-            st.experimental_rerun()
     with col2:
         if st.button("മലയാളം 🇮🇳"):
             st.session_state.language = "malayalam"
-            st.experimental_rerun()
-    st.stop()
-
+    st.stop()  # Stop further execution until a language is chosen
 # ---------------------------
 # Sidebar: Language Switch
 # ---------------------------
