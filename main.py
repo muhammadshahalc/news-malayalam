@@ -1,8 +1,9 @@
-
 import streamlit as st
 import mysql.connector
 import base64
 import pandas as pd
+from PIL import Image
+import io
 
 # ---------------------------
 # MySQL Connection Function
@@ -16,7 +17,6 @@ def get_connection():
         database=st.secrets["DB_NAME"],
         ssl_ca="ssl/ca.pem"   # keep your SSL cert if required
     )
-
 
 # ---------------------------
 # Fetch Data from DB
@@ -52,11 +52,15 @@ def fetch_unique_tags():
     return sorted(tags)
 
 # ---------------------------
-# Decode Base64 Image
+# Decode & Validate Base64 Image
 # ---------------------------
 def decode_image(base64_str):
     try:
-        return base64.b64decode(base64_str) if base64_str else None
+        img_bytes = base64.b64decode(base64_str) if base64_str else None
+        if img_bytes:
+            # Validate if it’s a real image
+            Image.open(io.BytesIO(img_bytes))
+        return img_bytes
     except Exception:
         return None
 
@@ -148,10 +152,13 @@ else:
 
                     st.caption(f"🗓️ {row['date']} | 🏷️ {row['tag']}")
 
+                    # --- Safe Image Rendering ---
                     if row["image_data"]:
                         img_bytes = decode_image(row["image_data"])
                         if img_bytes:
                             st.image(img_bytes, use_container_width=True)
+                        else:
+                            st.warning(f"⚠️ Could not display image for ID {row['id']}")
 
                     # Description preview
                     desc_words = desc.split()
