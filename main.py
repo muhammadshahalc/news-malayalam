@@ -52,15 +52,15 @@ def fetch_unique_tags():
     return sorted(tags)
 
 # ---------------------------
-# Decode & Validate Base64 Image
+# Decode Base64 → PIL Image
 # ---------------------------
 def decode_image(base64_str):
     try:
-        img_bytes = base64.b64decode(base64_str) if base64_str else None
-        if img_bytes:
-            # Validate if it’s a real image
-            Image.open(io.BytesIO(img_bytes))
-        return img_bytes
+        if not base64_str:
+            return None
+        img_bytes = base64.b64decode(base64_str)
+        img = Image.open(io.BytesIO(img_bytes))  # PIL image
+        return img
     except Exception:
         return None
 
@@ -154,9 +154,9 @@ else:
 
                     # --- Safe Image Rendering ---
                     if row["image_data"]:
-                        img_bytes = decode_image(row["image_data"])
-                        if img_bytes:
-                            st.image(img_bytes, use_container_width=True)
+                        img = decode_image(row["image_data"])
+                        if img:
+                            st.image(img, use_container_width=True)
                         else:
                             st.warning(f"⚠️ Could not display image for ID {row['id']}")
 
