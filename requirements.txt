@@ -2,3 +2,4 @@ streamlit==1.38.0
 mysql-connector-python==9.0.0
 pandas==2.2.2
 pillow==10.4.0
+protobuf==4.25.3
