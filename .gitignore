@@ -1,0 +1,26 @@
+# Virtual environment
+mal_venv/
+venv/
+.env/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebooks
+*.ipynb
+note.ipynb
+
+# Test files
+test.py
+
+
+# System files
+.DS_Store
+Thumbs.db
+
+# sql used for testing localy
+news_table.sql
